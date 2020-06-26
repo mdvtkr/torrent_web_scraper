@@ -1,6 +1,55 @@
 {
     "download-base": "/home/pi/S_Samba/X_Torrent/Download_box",
     "enable-download-base": "False",
+    "sites": [
+        {
+            "name": "torrentboza",
+            "enable": true,
+            "main_url": "https://torrentboza.com",
+            "urls": [
+                "https://torrentboza.com/bbs/board.php?bo_table=ent&page=",
+                "https://torrentboza.com/bbs/board.php?bo_table=daq&page="
+                ]
+        },
+        {
+            "name": "torrentdal",
+            "enable": true,
+            "main_url": "https://torrentboza.com",
+            "urls": [
+                "https://torrentdal.com/bbs/board.php?bo_table=todal_ent&page=",
+                "https://torrentdal.com/bbs/board.php?bo_table=todal_docu&page="
+                ]
+        },
+        {
+            "name": "torrentmap",
+            "enable": true,
+            "main_url": "https://torrentmap.com",
+            "urls": [
+                "https://www.torrentmap.com/bbs/board.php?bo_table=kr_ent&page=",
+                "https://www.torrentmap.com/bbs/board.php?bo_table=kr_daq&page="
+                ]
+        },
+        {
+            "name": "torrentview",
+            "enable": true,
+            "main_url": "https://torrentview13.com",
+            "urls": [
+                "https://torrentview13.net/bbs/board.php?bo_table=enter&page=",
+                "https://torrentview13.net/bbs/board.php?bo_table=tv&page="
+                ]
+        },
+        {
+            "name": "torrentwal",
+            "enable": true,
+            "main_url": "https://torrentwal2.com",
+            "urls": [
+                "https://torrentwal2.com/torrent_variety/torrent",
+                "https://torrentwal2.com/torrent_docu/torrent",
+                "https://torrentwal2.com/torrent_tv/torrent",
+                "https://torrentwal2.com/torrent_movie/torrent"
+                ]
+        }
+    ],
     "enable-torrentboza": "False",
     "enable-torrentdal": "False",
     "enable-torrentmap": "False",
@@ -28,7 +77,7 @@
         "video_codec": "264"
     },
     "page_scrwap_max": 10,
-    "trans-host": "Your server IP"
+    "trans-host": "Your server IP",
     "trans-id": "Your server ID",
     "trans-port": "Your server port",
     "trans-pw": "Your server PW"

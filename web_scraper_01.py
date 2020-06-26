@@ -90,7 +90,7 @@ class site_scraper:
             endp = endp+1
         return int((url[startp:endp]))
 
-    def getmagnetDataFromPageUrl(self, url):
+    def get_magnet(self, url):
         bsObj = web_scraper_lib.getBsObj(url)
         magnet = bsObj.find('ul', attrs={'class' : 'list-group'}).find('a', href=True)
         magnet = magnet.get('href') 

@@ -15,6 +15,10 @@ import web_scraper_program_list
 #이 부분은 각 scraper 쪽으로 옮겨져야 함.
 categoryList = [ "kortv_ent", "kortv_social"]
 
+# get site names which parsing rule exists
+def get_available_site_names():
+    return ['torrentboza', 'torrentdal', 'torrentmap', 'torrentview', 'torrentwal'];
+
 def getBsObj(addr):
     req = Request(addr, headers={'User-Agent': 'Mozilla/5.0'})
     html = urlopen(req).read().decode('utf-8','replace')

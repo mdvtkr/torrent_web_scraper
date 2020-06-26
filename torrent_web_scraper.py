@@ -26,6 +26,15 @@ if __name__ == '__main__':
 
     # This list is to scrap websites.
     siteList = []
+    scrapers = []
+    siteSettings = JD.get("sites")
+    sites = siteSettings.keys()
+    for site in sites:
+        if(siteSettings[site].get("enable")):
+            print("%s enabled" % site)
+            scrapers.append()
+            
+
 
     if JD.get('enable-torrentboza') == "True":
         siteList.append(web_scraper_01)
@@ -108,7 +117,7 @@ if __name__ == '__main__':
                     print("info: parse info=\t[%s][%s][%d][p. %d] - %s" % \
                             (scraper.sitename, cateIdx, boardIdNum, count, title))
 
-                    magnet = scraper.getmagnetDataFromPageUrl(href)
+                    magnet = scraper.get_magnet(href)
                     #print("\t%s" % magnet)
                     if magnet == None:
                         continue
