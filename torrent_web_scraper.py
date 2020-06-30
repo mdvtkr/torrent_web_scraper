@@ -2,17 +2,12 @@
 from datetime import datetime as dtime
 import os
 import sys
-import web_scraper_01
-import web_scraper_02
-import web_scraper_03
-import web_scraper_04
-import web_scraper_05
 import web_scraper_lib
+import torrent_scraper
 
 __version__ = 'v1.00'
 
 if __name__ == '__main__':
-
     SETTING_PATH = os.path.realpath(os.path.dirname(__file__))+"/"
     SETTING_FILE = SETTING_PATH+"web_scraper_settings.json"
     HISTORY_FILE = SETTING_PATH+"web_scraper_history.csv"
@@ -25,34 +20,19 @@ if __name__ == '__main__':
     webpage_max = JD.get('page_scrwap_max')
 
     # This list is to scrap websites.
-    siteList = []
     scrapers = []
-    siteSettings = JD.get("sites")
-    sites = siteSettings.keys()
-    for site in sites:
-        if(siteSettings[site].get("enable")):
-            print("%s enabled" % site)
-            scrapers.append()
-            
+    site_infos = JD.get("sites")
+    for site_info in site_infos:
+        scrapers.append(torrent_scraper.site_scraper(site_info, JD))
 
-
-    if JD.get('enable-torrentboza') == "True":
-        siteList.append(web_scraper_01)
-    if JD.get('enable-torrentmap') == "True":
-        siteList.append(web_scraper_02)
-    if JD.get('enable-torrentdal') == "True":
-        siteList.append(web_scraper_03)
-    if  JD.get('enable-torrentwal') == "True":
-        siteList.append(web_scraper_04)
-    if  JD.get('enable-torrentview') == "True":
-        siteList.append(web_scraper_05)
-
-    if len(siteList) == 0:
-        print("Wrong, we should choice at least one analyzer.")
+    if len(scrapers) == 0:
+        print("Nothing to run\nChoose at least one site in web_Scraper_settings.json.")
         sys.exit()
 
-    for site in siteList:
-        scraper = site.site_scraper(JD)
+    for scraper in scrapers:
+        if not scraper.enalbed:
+            continue
+        print("%s running" % scraper.sitename)
 
         #Step 1. test for access with main url
         #print("====================================\n=> Try to access site : ", scraper.getMainUrl())
@@ -100,10 +80,10 @@ if __name__ == '__main__':
                             #print("needKeepgoing is false --> break \tcateIdx=%s,boardIdNum=%s" % (cateIdx,boardIdNum))
                             break
                     if cateIdx =="movie":
-                      matched_name = web_scraper_lib.checkTitleWithMovieList(title, MOVIE_LIST_FILE, \
+                        matched_name = web_scraper_lib.checkTitleWithMovieList(title, MOVIE_LIST_FILE, \
                         JD.get("movie").get("video_codec"), JD.get("movie").get("resolution"), dtime.now().strftime("%Y") )
                     else:
-                      matched_name=web_scraper_lib.checkTitleWithProgramList(title)
+                        matched_name=web_scraper_lib.checkTitleWithProgramList(title)
 
                     if not matched_name:
                         #print("info main matched_name ", title)
@@ -127,9 +107,9 @@ if __name__ == '__main__':
                         continue
 
                     if cateIdx =="movie":
-                      download_dir=JD.get("movie").get("download")
-                      if not os.path.exists(download_dir):
-                        os.makedirs(download_dir)
+                        download_dir=JD.get("movie").get("download")
+                        if not os.path.exists(download_dir):
+                            os.makedirs(download_dir)
                     else:
                         if JD.get('enable-download-base') == "True":
                             download_dir=JD.get("download-base")+"/"+matched_name

@@ -24,10 +24,13 @@ class site_scraper:
             self.plugin = torrentwal(site_info, JD)
         elif self.sitename == "torrentwal":
             self.plugin = torrentwal(site_info, JD)
+        elif self.sitename == "torrentgee":
+            self.plugin = torrentgee(site_info, JD)
 
         self.mainUrl = site_info.get("main_url")
         self.JD = JD
         self.urls = site_info.get("urls")
+        self.enalbed = site_info.get("enable")
 
     def saveNewLatestIDwithCate(self, category, newId):
         self.plugin.save_latest_id(category, newId)
@@ -41,19 +44,16 @@ class site_scraper:
     def checkMainUrl(self):
         ret = web_scraper_lib.checkUrl(self.mainUrl)
         return ret
-
-    def getName(self):
-        return (self.name)
                 
     def getScrapUrl(self, cateIdxNo, count):
-        return (self.webpage_addr[cateIdxNo]+str(count))
+        return (self.urls[cateIdxNo]+str(count))
                 
     def getParseData(self, url):
         return self.plugin.get_parsed_data(url)
 
     #url을 기반으로 wr_id text를 뒤의 id parsing 
     def get_wr_id(self, url):
-        return self.plugin.get_parsed_data(url)
+        return self.plugin.get_wr_id(url)
 
     def get_magnet(self, url):
         return self.plugin.get_maget(url)
@@ -137,9 +137,9 @@ class torrentboza(site_plugin):
     def need_keep_going(self, category, id):
         tmp = None
         if category == 'kortv_ent':
-            tmp = self.plugin.kortv_ent_id
+            tmp = self.kortv_ent_id
         elif category == 'kortv_social':
-            tmp = self.plugin.kortv_soc_id
+            tmp = self.kortv_soc_id
         else:
             print("Something Wrong, category = %s" % category)
             return False
@@ -382,6 +382,8 @@ class torrentview:
     def __init__(self, site_info, JD):
         self.sitename = site_info.get("name")
         self.JD = JD
+        self.kortv_ent_id = JD.get('history').get("%s_kortv_ent" % (self.sitename))
+        self.kortv_soc_id = JD.get('history').get("%s_kortv_soc" % (self.sitename))
 
     def need_keep_going(self, category, id):
         tmp = None
@@ -389,10 +391,10 @@ class torrentview:
             tmp = self.kortv_ent_id
         elif category == 'kortv_social':
             tmp = self.kortv_soc_id
-        elif category == 'kortv_dra':
-            tmp = self.kortv_dra_id
-        elif category == "movie":
-            tmp = self.movie_id
+        # elif category == 'kortv_dra':
+        #     tmp = self.kortv_dra_id
+        # elif category == "movie":
+        #     tmp = self.movie_id
         else:
             print("Something Wrong, category = %s" % category)
             return False
@@ -452,7 +454,83 @@ class torrentview:
 
         self.JD.set('history', tmp)
 
+class torrentgee(site_plugin):
+    def __init__(self, site_info, JD):
+        super().__init__(site_info, JD)
+        self.kortv_ent_id = JD.get('history').get("%s_kortv_ent" % (self.sitename))
+        self.kortv_soc_id = JD.get('history').get("%s_kortv_soc" % (self.sitename))
 
+    def need_keep_going(self, category, id):
+        tmp = None
+        if category == 'kortv_ent':
+            tmp = self.kortv_ent_id
+        elif category == 'kortv_social':
+            tmp = self.kortv_soc_id
+        # elif category == 'kortv_dra':
+        #     tmp = self.kortv_dra_id
+        # elif category == "movie":
+        #     tmp = self.movie_id
+        else:
+            print("Something Wrong, category = %s" % category)
+            return False
+
+        if id > tmp:
+            return True
+
+        return False
+
+    def get_maget(self, url):
+        bsObj = web_scraper_lib.getBsObj(url)
+        magnet = None
+        if not bsObj == None:
+            magnetItem = bsObj.find('a', onclick=re.compile(".*magnet.*"))
+            if not magnetItem == None:
+                _ = magnetItem.get('onclick')
+                lcnt = _.find("'")
+                rcnt = _.rfind("'")
+                magnet = _[lcnt+1:rcnt]
+                print(magnet)
+
+        return magnet
+
+    def get_wr_id(self, url):
+        tmp = url.rfind('post')
+        if (tmp < 0): # 둘다 검색 못하면 포기
+            return 0
+        else:
+            checkStr = 'post'
+            #example: https://torrentgee16.com/post/49322?&page=1
+            startp = tmp+len(checkStr)+1
+            endp = startp
+
+            for endp in range(startp,len(url)):
+                if (url[endp]).isdigit():
+                    continue
+                else:
+                    endp = endp-1
+                    break
+
+            endp = endp+1
+        return int((url[startp:endp]))
+
+    def get_parsed_data(self, url):
+        bsObj = web_scraper_lib.getBsObj(url)
+        nameList = bsObj.find('div', attrs={'class': 'list-wrap'}).find_all('a', href=re.compile(".*post.*"))
+        return nameList
+
+    def save_latest_id(self, category, newId):
+        tmp = self.JD.get('history')
+        if category == 'kortv_ent':
+            tmp.update(torrentgee_kortv_ent = newId)
+            self.kortv_ent_id = newId
+        elif category == 'kortv_social':
+            tmp.update(torrentgee_kortv_soc = newId)
+            self.kortv_soc_id = newId
+        else:
+            print("Something Wrong, category = %s" % category)
+
+        self.JD.set('history', tmp)
+        return
 
 
 

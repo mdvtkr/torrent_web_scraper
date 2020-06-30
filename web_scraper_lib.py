@@ -17,7 +17,7 @@ categoryList = [ "kortv_ent", "kortv_social"]
 
 # get site names which parsing rule exists
 def get_available_site_names():
-    return ['torrentboza', 'torrentdal', 'torrentmap', 'torrentview', 'torrentwal'];
+    return ['torrentboza', 'torrentdal', 'torrentmap', 'torrentview', 'torrentwal', 'torrentgee']
 
 def getBsObj(addr):
     req = Request(addr, headers={'User-Agent': 'Mozilla/5.0'})

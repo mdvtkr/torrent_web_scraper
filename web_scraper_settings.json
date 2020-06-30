@@ -4,7 +4,7 @@
     "sites": [
         {
             "name": "torrentboza",
-            "enable": true,
+            "enable": false,
             "main_url": "https://torrentboza.com",
             "urls": [
                 "https://torrentboza.com/bbs/board.php?bo_table=ent&page=",
@@ -13,7 +13,7 @@
         },
         {
             "name": "torrentdal",
-            "enable": true,
+            "enable": false,
             "main_url": "https://torrentboza.com",
             "urls": [
                 "https://torrentdal.com/bbs/board.php?bo_table=todal_ent&page=",
@@ -22,7 +22,7 @@
         },
         {
             "name": "torrentmap",
-            "enable": true,
+            "enable": false,
             "main_url": "https://torrentmap.com",
             "urls": [
                 "https://www.torrentmap.com/bbs/board.php?bo_table=kr_ent&page=",
@@ -31,7 +31,7 @@
         },
         {
             "name": "torrentview",
-            "enable": true,
+            "enable": false,
             "main_url": "https://torrentview13.com",
             "urls": [
                 "https://torrentview13.net/bbs/board.php?bo_table=enter&page=",
@@ -40,7 +40,7 @@
         },
         {
             "name": "torrentwal",
-            "enable": true,
+            "enable": false,
             "main_url": "https://torrentwal2.com",
             "urls": [
                 "https://torrentwal2.com/torrent_variety/torrent",
@@ -48,13 +48,17 @@
                 "https://torrentwal2.com/torrent_tv/torrent",
                 "https://torrentwal2.com/torrent_movie/torrent"
                 ]
+        },
+        {
+            "name": "torrentgee",
+            "enable": true,
+            "main_url": "https://torrentgee16.com",
+            "urls": [
+                "https://torrentgee16.com/board/torrent_ent?&page=",
+                "https://torrentgee16.com/board/torrent_social?&page="
+                ]
         }
     ],
-    "enable-torrentboza": "False",
-    "enable-torrentdal": "False",
-    "enable-torrentmap": "False",
-    "enable-torrentview": "True",
-    "enable-torrentwal": "False",
     "history": {
         "torrentboza_kortv_ent": 0,
         "torrentboza_kortv_soc": 0,
@@ -67,7 +71,9 @@
         "torrentwal_kortv_dra": 0,
         "torrentwal_kortv_ent": 0,
         "torrentwal_kortv_soc": 0,
-        "torrentwal_movie": 0
+        "torrentwal_movie": 0,
+        "torrentgee_kortv_ent": 0,
+        "torrentgee_kortv_soc": 0
     },
     "movie": {
         "download": "/home/pi/S_Samba/X_Torrent/Download_box/movie/",
